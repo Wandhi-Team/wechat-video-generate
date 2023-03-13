@@ -1,6 +1,7 @@
 import glob
 import json
 import logging
+import os
 import random
 import re
 import time
@@ -282,7 +283,7 @@ class GenerateClient:
         images = glob.glob(str(path.joinpath("*.jpg")))
         if not images:
             return
-        images = sorted(images, key=lambda e: int(e.split("\\")[-1].split(".")[0]))
+        images = sorted(images, key=lambda e: int(e.split(os.sep)[-1].split(".")[0]))
         images = self.resize_images(images)
         if not self.output_path:
             video_path = WORK_PATH.joinpath(self.keyword, "output")
