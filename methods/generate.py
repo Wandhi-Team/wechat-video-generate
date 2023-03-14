@@ -84,9 +84,9 @@ class GenerateClient:
 
         """去掉‘微信’"""
         if (
-            json_content
-            and "微信" in json_content[0]["text"]
-            and len(json_content[0]["text"]) < 8
+                json_content
+                and "微信" in json_content[0]["text"]
+                and len(json_content[0]["text"]) < 8
         ):
             json_content = json_content[1:]
 
@@ -126,7 +126,7 @@ class GenerateClient:
         position_right = 0
         for i in range(n):
             if re.compile(r"[0-9]{1,2}:[ ]{0,1}[0-9]{1,2}").findall(
-                json_content[i]["text"]
+                    json_content[i]["text"]
             ):
                 # 微信时间
                 continue
@@ -135,12 +135,12 @@ class GenerateClient:
                 continue
 
             if (
-                i > 0
-                and abs(
-                    json_content[i]["position"][0][1]
-                    - json_content[i - 1]["position"][0][1]
-                )
-                < same_sentence_threshold
+                    i > 0
+                    and abs(
+                json_content[i]["position"][0][1]
+                - json_content[i - 1]["position"][0][1]
+            )
+                    < same_sentence_threshold
             ):
                 # 认为当前话跟上一句话是同一句话
                 text += json_content[i]["text"]
@@ -157,7 +157,7 @@ class GenerateClient:
                         # 第一句话更倾向于右边的人说的
                         float_value = 25
                     if abs(position_left - left_around_position) + float_value < abs(
-                        position_right - right_around_position
+                            position_right - right_around_position
                     ):
                         # 离左侧更近
                         res.append({"position": "left", "text": text})
@@ -178,7 +178,7 @@ class GenerateClient:
                 # 第一句话更倾向于右边的人说的
                 float_value = 25
             if abs(position_left - left_around_position) + float_value < abs(
-                position_right - right_around_position
+                    position_right - right_around_position
             ):
                 # 离左侧更近
                 res.append({"position": "left", "text": text})
@@ -202,7 +202,7 @@ class GenerateClient:
 
     def playwright_run(self, playwright, formatted_jsons):
         browser = playwright.chromium.launch(headless=True)
-        context = browser.new_context()
+        context = browser.new_context(viewport={"width": 1920, "height": 1080})
 
         page = context.new_page()
         page.goto("http://127.0.0.1:36999")
